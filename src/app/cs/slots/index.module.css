@@ -1,0 +1,27 @@
+/* index.module.css */
+.activeSlot {
+    background-color: green;
+    color: white;
+  }
+  
+  .activeSlot input[type="radio"] {
+    display: none;
+  }
+  
+  .activeSlot label {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .activeSlot label:hover {
+    background-color: darkgreen;
+  }
+  
+  /* index.module.css */
+
+.slotImage {
+    width: 45px; /* Adjust width as needed */
+    height: 60px; /* Adjust height as needed */
+  }
+  

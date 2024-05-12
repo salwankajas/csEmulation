@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: white;
+  color:#181818
+  /* background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb)); */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.i-phone-frem {
+  width: 18rem;
+  height: 33rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.i-phone-frem::before {
+  content: "";
+  position: absolute;
+  top: 9rem;
+  right: -16px;
+  width: 5px;
+  height: 47px;
+}
+
+.i-phone-frem::after {
+  content: "";
+  position: absolute;
+  top: 3rem;
+  right: -16px;
+  width: 5px;
+  height: 85px;
+}
+
+.came {
+  width: 2rem;
+  position: absolute;
+  top: 6px;
+}
+
+.circle-svg circle {
+  fill: none;
+}
+
+.circle-svg .circle1 {
+  stroke-width: 10px;
+  stroke-dashoffset: 0;
+  stroke: #181818;
+}
+
+.circle-svg .circle2 {
+  stroke: url(#GradientColor);
+  stroke-width: 10px;
+  stroke-dasharray: 472;
+  stroke-dashoffset: 472;
+  animation: cirle 3s linear forwards;
+}
+
+@keyframes cirle {
+  100% {
+      stroke-dashoffset: 0;
+  }
+}
+
+.flash {
+  width: 55px;
+  position: absolute;
+}
+
+#number {
+  position: absolute;
+  bottom: 33px;
+  font-size: larger;
+  font-weight: 600;
+  color: #4E4E4E;
+}
