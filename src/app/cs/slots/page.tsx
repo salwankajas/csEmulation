@@ -20,7 +20,7 @@ const ChargingStation = (props) => {
     const id = props.searchParams.id;
     const docRef = doc(db, "shop", id!)
     const docRefs = doc(db, "shop", `${id!}`)
-    const socket = io("ws://192.168.1.6:5002")
+    const socket = io("ws://192.168.1.3:5002")
     useEffect(() => {
         const fetchData = async () => {
             const snapshot = await getDoc(docRef)

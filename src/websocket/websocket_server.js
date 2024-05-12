@@ -6,7 +6,7 @@ const csabi = require('./abiCs.json');
 const provider = new ethers.providers.JsonRpcProvider("https://rpc-amoy.polygon.technology");
 
 const evcAddress = '0x965b9ca7dD9ec22FF615a156b731E97b7baF9DA1';
-const CharginStationAddress = '0x1909714E6812045b6EAFf379bdE147dcc1E5A32B';
+const CharginStationAddress = '0xe6c270575a0fC542376220843B1bb317f2Ddc93c';
 let fee;
 const evcContract = new ethers.Contract(evcAddress, abi, provider);
 const CharginStationContract = new ethers.Contract(CharginStationAddress,csabi,provider);
@@ -32,6 +32,7 @@ let CharginStationContractWithSigner;
 let perclimit;
 let slot;
 let chargeRate;
+let timestampInSeconds;
 
 io.on("connection", async (socket) => {
   console.log(socket.id)
@@ -45,8 +46,10 @@ io.on("connection", async (socket) => {
       CharginStationContractWithSigner = CharginStationContract.connect(wallet);
       slot = data["slot"]
       chargeRate = data["chargeRate"]
-      const startChargingApp = await CharginStationContractWithSigner.startChargingApp(slot);
+      timestampInSeconds = Math.floor(Date.now() / 1000);
+      const startChargingApp = await CharginStationContractWithSigner.startChargingApp(slot,timestampInSeconds);
       console.log(await startChargingApp.wait());
+      timestampInSeconds = (timestampInSeconds - Math.floor(Date.now() / 1000));
       io.emit("initialized", "done");
       fee = data["costEst"]
       console.log(data["privcs"])
@@ -85,8 +88,11 @@ async function stopChargingSimulation(ws){
   clearInterval(interval);
   ws.emit("stop", chargingPercentage.toString());
   cost = (Math.ceil(fee/(100-InitchargingPercentage)*(chargingPercentage- InitchargingPercentage)))
-  const endCharging = await CharginStationContractWithSigner.endCharging(fromAdrress,ethers.BigNumber.from(slot),ethers.BigNumber.from(chargeRate),ethers.BigNumber.from(cost));
-  console.log(await endCharging.wait());
+  timestampInSeconds = (Math.floor(Date.now() / 1000) - timestampInSeconds)
+  const endCharging = await CharginStationContractWithSigner.endCharging(fromAdrress,ethers.BigNumber.from(slot),ethers.BigNumber.from(chargeRate),ethers.BigNumber.from(cost),timestampInSeconds);
+  const end = await endCharging.wait()
+  console.log(end);
+  ws.emit("transaction", end["transactionHash"]);
   const transferFromTx = await evctokenContractWithSigner.transferFrom(fromAdrress, toAdrress, cost);
   console.log(await transferFromTx.wait());
 }
